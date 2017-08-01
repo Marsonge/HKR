@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using HKR.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace HKR
 {
@@ -29,6 +31,8 @@ namespace HKR
         {
             // Add framework services.
             services.AddMvc();
+
+            services.AddDbContext<HKRContext>(opt => opt.UseInMemoryDatabase());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
