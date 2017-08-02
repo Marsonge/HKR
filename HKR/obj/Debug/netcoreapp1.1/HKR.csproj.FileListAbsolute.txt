@@ -1,9 +1,0 @@
-C:\DEVTOOLS\HKR\HKR\bin\Debug\netcoreapp1.1\HKR.deps.json
-C:\DEVTOOLS\HKR\HKR\bin\Debug\netcoreapp1.1\HKR.runtimeconfig.json
-C:\DEVTOOLS\HKR\HKR\bin\Debug\netcoreapp1.1\HKR.runtimeconfig.dev.json
-C:\DEVTOOLS\HKR\HKR\bin\Debug\netcoreapp1.1\HKR.dll
-C:\DEVTOOLS\HKR\HKR\bin\Debug\netcoreapp1.1\HKR.pdb
-C:\DEVTOOLS\HKR\HKR\obj\Debug\netcoreapp1.1\HKR.csprojResolveAssemblyReference.cache
-C:\DEVTOOLS\HKR\HKR\obj\Debug\netcoreapp1.1\HKR.AssemblyInfo.cs
-C:\DEVTOOLS\HKR\HKR\obj\Debug\netcoreapp1.1\HKR.dll
-C:\DEVTOOLS\HKR\HKR\obj\Debug\netcoreapp1.1\HKR.pdb
