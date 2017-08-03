@@ -7,6 +7,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using HKRInfrastructure.Context;
+using Microsoft.EntityFrameworkCore;
+using StructureMap;
+using HKRCore.Interface;
+using System.Diagnostics;
+using HKRCore.Model;
+using HKRInfrastructure.Repository;
 
 namespace HKRWebServices
 {
@@ -25,10 +32,44 @@ namespace HKRWebServices
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc().AddControllersAsServices();
+
+            //The database context
+            services.AddDbContext<HKRContext>( opt => opt.UseInMemoryDatabase() );
+            return ConfigureIoC( services );
+
+        }
+
+        private IServiceProvider ConfigureIoC( IServiceCollection services )
+        {
+            var container = new Container();
+
+            container.Configure( config =>
+                {
+                    config.Scan( _ =>
+                    {
+                        // Gets all assemblies
+                        _.AssembliesFromApplicationBaseDirectory();
+                        // Class for IClass
+                        _.WithDefaultConventions();
+                        // If it has a single implementation...
+                        _.SingleImplementationsOfInterface();
+
+                    } );
+                    config.For( typeof( IRepository<> ) ).Add( typeof( Repository<> ) );
+
+                    config.Populate( services );
+                }
+            );
+            /* To get a report of what is in the container in debug
+            var report = container.WhatDoIHave();
+
+            Debug.WriteLine( report );
+            */
+            return container.GetInstance<IServiceProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

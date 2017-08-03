@@ -11,8 +11,8 @@ namespace HKRCore.Interface
         T GetById(int id);
         IEnumerable<T> List();
         IEnumerable<T> List(Expression<Func<T, bool>> predicate);
-        void Add(T entity);
+        void Insert(T entity);
         void Delete(T entity);
-        void Edit(T entity);
+        void Update(T entity);
     }
 }

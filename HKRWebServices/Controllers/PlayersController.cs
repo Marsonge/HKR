@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using HKRCore.Model;
+using HKRCore.Interface;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,16 +12,16 @@ namespace HKRWebServices.Controllers
     public class PlayersController : Controller
     {
 
-        private readonly IPlayerRepository repository;
+        private readonly IPlayerRepository _repository;
 
         public PlayersController(IPlayerRepository repository)
         {
-            repository = repository;
+            _repository = repository;
 
-            if (repository.Players.Count() == 0)
+            if (_repository.List().Count() == 0)
             {
-                repository.Players.Add(new Player { Name = "Truc", PosX = 1, PosY = 2 });
-                repository.SaveChanges();
+                _repository.Insert(new Player { Name = "Truc", PosX = 1, PosY = 2 });
+                
             }
         }
 
@@ -28,14 +29,14 @@ namespace HKRWebServices.Controllers
         [HttpGet]
         public IEnumerable<Player> GetAll()
         {
-            return repository.Players.ToList();
+            return _repository.List();
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var item = repository.Players.FirstOrDefault(t => t.Id == id);
+            var item = _repository.GetById(id);
             if (item == null)
             {
                 return NotFound();
