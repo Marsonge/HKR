@@ -42,13 +42,13 @@ namespace HKRWebServices.Controllers
         }
 
         // GET api/values/5 (Get one from id)
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        [HttpGet("{id}", Name = "GetCompany" )]
+        public IActionResult GetCompany(long id)
         {
             var item = _context.Players.Find(id);
             if (item == null)
             {
-                return NotFound();
+                return NotFound(new { Id = id, error = $"There was no customer with an id of {id}" });
             }
             var dto = _mapper.Map<Player, PlayerDefaultDto>( item );
             return new ObjectResult( dto );
@@ -56,25 +56,42 @@ namespace HKRWebServices.Controllers
 
         // POST api/values (Create a new one)
         [HttpPost]
-        public void Post([FromBody]PlayerInscription newPlayer)
+        public IActionResult Post([FromBody]PlayerInscription newPlayer)
         {
             var player = _mapper.Map<PlayerInscription, Player>(newPlayer);
             _context.Players.Add( player );
             _context.SaveChanges();
+            return CreatedAtRoute( "GetCompany", new { id = player.Id}, player );
         }
 
         // PUT api/values/5 (Update)
+        // TODO check if we're connected with the good user 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]Player player)
+        public IActionResult Put(long id, [FromBody]Player player)
         {
+            if(player==null || player.Id != id)
+            {
+                return BadRequest();
+            }
 
+            _context.Players.Update( player );
+            _context.SaveChanges();
+
+            return AcceptedAtRoute( "GetCompany", new { id = player.Id }, player );
         }
 
         // TODO check if we're connected with the good user 
         // DELETE api/values/5 (Delete one)
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(long id)
         {
+            // Here get the actual user
+
+            var toDelete = new Player { Id = id };
+            _context.Players.Attach( toDelete );
+            _context.Players.Remove( toDelete );
+
+            return Ok();
         }
     }
 }

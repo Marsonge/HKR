@@ -8,7 +8,7 @@ namespace HKRWebServices.PlayerDTO.DTO
     public class PlayerInscription
     {
         [Required]
-        public string Name { get; set; }
+        public string Username { get; set; }
         [Required, DataType( DataType.EmailAddress )]
         public string Email { get; set; }
         [Required, DataType( DataType.Password )]

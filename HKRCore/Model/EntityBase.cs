@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace HKRCore.Model
 {
     public abstract class EntityBase
     {
         [Key]
-        public int Id { get; protected set; }
+        public long Id { get; set; }
     }
 }
