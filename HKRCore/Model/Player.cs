@@ -8,7 +8,12 @@ namespace HKRCore.Model
 {
     public class Player : EntityBase
     {
-        public string Name { get; set; }
+        [Required]
+        public string Username { get; set; }
+        [Required, DataType( DataType.EmailAddress )]
+        public string Email { get; set; }
+        [Required]
+        public string Password { get; set; }
         public long PosX { get; set; }
         public long PosY { get; set; }
     }

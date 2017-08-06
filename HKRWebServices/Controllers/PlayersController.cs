@@ -3,6 +3,8 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using HKRCore.Model;
 using HKRCore.Interface;
+using AutoMapper;
+using HKRWebServices.PlayerDTO.DTO;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,23 +15,26 @@ namespace HKRWebServices.Controllers
     {
 
         private readonly IPlayerRepository _repository;
+        private readonly IMapper _mapper;
 
-        public PlayersController(IPlayerRepository repository)
+        public PlayersController(IPlayerRepository repository, IMapper mapper )
         {
             _repository = repository;
+            _mapper = mapper;
 
             if (_repository.List().Count() == 0)
             {
-                _repository.Insert(new Player { Name = "Truc", PosX = 1, PosY = 2 });
+                _repository.Insert(new Player { Username = "Truc", PosX = 1, PosY = 2 });
                 
             }
         }
 
         // GET: api/values
         [HttpGet]
-        public IEnumerable<Player> GetAll()
+        public IEnumerable<PlayerDefaultDto> GetAll()
         {
-            return _repository.List();
+            var list = _repository.List();
+            return _mapper.Map< IEnumerable<Player>, IEnumerable<PlayerDefaultDto>>( list );
         }
 
         // GET api/values/5
@@ -41,7 +46,8 @@ namespace HKRWebServices.Controllers
             {
                 return NotFound();
             }
-            return new ObjectResult(item);
+            var dto = _mapper.Map<Player, PlayerDefaultDto>( item );
+            return new ObjectResult( dto );
         }
 
         // POST api/values

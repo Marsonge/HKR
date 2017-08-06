@@ -14,6 +14,8 @@ using HKRCore.Interface;
 using System.Diagnostics;
 using HKRCore.Model;
 using HKRInfrastructure.Repository;
+using AutoMapper;
+using HKRWebServices.Mapper;
 
 namespace HKRWebServices
 {
@@ -36,7 +38,14 @@ namespace HKRWebServices
         {
             // Add framework services.
             services.AddMvc().AddControllersAsServices();
+            services.AddAutoMapper();
+            /*var config = new AutoMapper.MapperConfiguration( cfg =>
+            {
+                cfg.AddProfile( new UserProfile() );
+            } );
 
+            var mapper = config.CreateMapper();
+            services.AddSingleton<IMapper>( mapper );*/
             //The database context
             services.AddDbContext<HKRContext>( opt => opt.UseInMemoryDatabase() );
             return ConfigureIoC( services );
