@@ -2,9 +2,9 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using HKRCore.Model;
-using HKRCore.Interface;
 using AutoMapper;
 using HKRWebServices.PlayerDTO.DTO;
+using HKRInfrastructure.Context;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,34 +14,38 @@ namespace HKRWebServices.Controllers
     public class PlayersController : Controller
     {
 
-        private readonly IPlayerRepository _repository;
+        private readonly HKRContext _context;
         private readonly IMapper _mapper;
 
-        public PlayersController(IPlayerRepository repository, IMapper mapper )
+        public PlayersController( HKRContext context, IMapper mapper )
         {
-            _repository = repository;
+            _context = context;
             _mapper = mapper;
 
-            if (_repository.List().Count() == 0)
+            if (_context.Players.Count() == 0)
             {
-                _repository.Insert(new Player { Username = "Truc", PosX = 1, PosY = 2 });
+                _context.Players.AddRange(
+                    new Player { Username = "Truc", PosX = 1, PosY = 2 },
+                    new Player { Username = "Chose", PosX = 1, PosY = 2 }
+                    );
+                _context.SaveChanges();
                 
             }
         }
 
-        // GET: api/values
+        // GET: api/values (Get all players)
         [HttpGet]
         public IEnumerable<PlayerDefaultDto> GetAll()
         {
-            var list = _repository.List();
+            var list = _context.Players.ToList();
             return _mapper.Map< IEnumerable<Player>, IEnumerable<PlayerDefaultDto>>( list );
         }
 
-        // GET api/values/5
+        // GET api/values/5 (Get one from id)
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var item = _repository.GetById(id);
+            var item = _context.Players.Find(id);
             if (item == null)
             {
                 return NotFound();
@@ -50,19 +54,24 @@ namespace HKRWebServices.Controllers
             return new ObjectResult( dto );
         }
 
-        // POST api/values
+        // POST api/values (Create a new one)
         [HttpPost]
-        public void Post([FromBody]string value)
+        public void Post([FromBody]PlayerInscription newPlayer)
         {
+            var player = _mapper.Map<PlayerInscription, Player>(newPlayer);
+            _context.Players.Add( player );
+            _context.SaveChanges();
         }
 
-        // PUT api/values/5
+        // PUT api/values/5 (Update)
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody]Player player)
         {
+
         }
 
-        // DELETE api/values/5
+        // TODO check if we're connected with the good user 
+        // DELETE api/values/5 (Delete one)
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

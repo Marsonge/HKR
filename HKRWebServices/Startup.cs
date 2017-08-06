@@ -10,10 +10,8 @@ using Microsoft.Extensions.Logging;
 using HKRInfrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using StructureMap;
-using HKRCore.Interface;
 using System.Diagnostics;
 using HKRCore.Model;
-using HKRInfrastructure.Repository;
 using AutoMapper;
 using HKRWebServices.Mapper;
 
@@ -68,7 +66,6 @@ namespace HKRWebServices
                         _.SingleImplementationsOfInterface();
 
                     } );
-                    config.For( typeof( IRepository<> ) ).Add( typeof( Repository<> ) );
 
                     config.Populate( services );
                 }
