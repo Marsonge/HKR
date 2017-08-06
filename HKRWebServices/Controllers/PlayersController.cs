@@ -5,6 +5,7 @@ using HKRCore.Model;
 using AutoMapper;
 using HKRWebServices.PlayerDTO.DTO;
 using HKRInfrastructure.Context;
+using HKRWebServices.DTO;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -65,7 +66,7 @@ namespace HKRWebServices.Controllers
         }
 
         // PUT api/values/5 (Update)
-        // TODO check if we're connected with the good user 
+        // Shouldn't exist I suppose, it's just for the example
         [HttpPut("{id}")]
         public IActionResult Put(long id, [FromBody]Player player)
         {
@@ -92,6 +93,26 @@ namespace HKRWebServices.Controllers
             _context.Players.Remove( toDelete );
 
             return Ok();
+        }
+
+        [HttpPatch( "{id}/move" )]
+        public IActionResult MovePlayer( long id, [FromBody]Coord coord )
+        {
+            var player = _context.Players.Find( id );
+            if (player == null)
+            {
+                return BadRequest( $"Player with id {id} doesn't exist" );
+            }
+            if(!player.CanMove(coord.PosX, coord.PosY ))
+            {
+                return BadRequest($"Player with id {id} can't move to {coord.PosX}, {coord.PosY}");
+            }
+
+
+            player.move(coord.PosX, coord.PosY);
+            _context.SaveChanges();
+
+            return AcceptedAtRoute( "GetCompany", new { id = player.Id }, player );
         }
     }
 }
