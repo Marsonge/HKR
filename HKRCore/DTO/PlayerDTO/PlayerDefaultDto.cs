@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HKRWebServices.PlayerDTO.DTO
+namespace HKRCore.DTO.PlayerDTO
 {
     public class PlayerDefaultDto
     {
-        public Int64 Id { get; set; }
+        public long Id { get; set; }
         public string Username { get; set; }
         public long PosX { get; set; }
         public long PosY { get; set; }

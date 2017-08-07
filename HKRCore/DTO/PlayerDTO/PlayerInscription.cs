@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace HKRWebServices.PlayerDTO.DTO
+namespace HKRCore.DTO.PlayerDTO
 {
     public class PlayerInscription
     {

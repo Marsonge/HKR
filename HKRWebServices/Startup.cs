@@ -13,7 +13,6 @@ using StructureMap;
 using System.Diagnostics;
 using HKRCore.Model;
 using AutoMapper;
-using HKRWebServices.Mapper;
 
 namespace HKRWebServices
 {

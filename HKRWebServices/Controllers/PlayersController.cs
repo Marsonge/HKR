@@ -2,10 +2,11 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using HKRCore.Model;
-using AutoMapper;
-using HKRWebServices.PlayerDTO.DTO;
 using HKRInfrastructure.Context;
-using HKRWebServices.DTO;
+using HKRCore.Interface;
+using HKRCore.DTO.PlayerDTO;
+using HKRCore.DTO;
+using HKRCore.Exception;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,53 +16,39 @@ namespace HKRWebServices.Controllers
     public class PlayersController : Controller
     {
 
-        private readonly HKRContext _context;
-        private readonly IMapper _mapper;
+        private IPlayersService _playersService;
 
-        public PlayersController( HKRContext context, IMapper mapper )
+        public PlayersController(IPlayersService playersService)
         {
-            _context = context;
-            _mapper = mapper;
+            _playersService = playersService;
 
-            if (_context.Players.Count() == 0)
-            {
-                _context.Players.AddRange(
-                    new Player { Username = "Truc", PosX = 1, PosY = 2 },
-                    new Player { Username = "Chose", PosX = 1, PosY = 2 }
-                    );
-                _context.SaveChanges();
-                
-            }
         }
 
         // GET: api/values (Get all players)
         [HttpGet]
         public IEnumerable<PlayerDefaultDto> GetAll()
         {
-            var list = _context.Players.ToList();
-            return _mapper.Map< IEnumerable<Player>, IEnumerable<PlayerDefaultDto>>( list );
+            var list = _playersService.GetAll();
+            return list;
         }
 
         // GET api/values/5 (Get one from id)
         [HttpGet("{id}", Name = "GetCompany" )]
         public IActionResult GetCompany(long id)
         {
-            var item = _context.Players.Find(id);
+            var item = _playersService.Find(id);
             if (item == null)
             {
                 return NotFound(new { Id = id, error = $"There was no customer with an id of {id}" });
             }
-            var dto = _mapper.Map<Player, PlayerDefaultDto>( item );
-            return new ObjectResult( dto );
+            return new ObjectResult( item );
         }
 
         // POST api/values (Create a new one)
         [HttpPost]
         public IActionResult Post([FromBody]PlayerInscription newPlayer)
         {
-            var player = _mapper.Map<PlayerInscription, Player>(newPlayer);
-            _context.Players.Add( player );
-            _context.SaveChanges();
+            var player = _playersService.Add( newPlayer );
             return CreatedAtRoute( "GetCompany", new { id = player.Id}, player );
         }
 
@@ -74,9 +61,7 @@ namespace HKRWebServices.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Players.Update( player );
-            _context.SaveChanges();
+            _playersService.Update( player );
 
             return AcceptedAtRoute( "GetCompany", new { id = player.Id }, player );
         }
@@ -88,9 +73,7 @@ namespace HKRWebServices.Controllers
         {
             // Here get the actual user
 
-            var toDelete = new Player { Id = id };
-            _context.Players.Attach( toDelete );
-            _context.Players.Remove( toDelete );
+            _playersService.Delete( id );
 
             return Ok();
         }
@@ -98,21 +81,16 @@ namespace HKRWebServices.Controllers
         [HttpPatch( "{id}/move" )]
         public IActionResult MovePlayer( long id, [FromBody]Coord coord )
         {
-            var player = _context.Players.Find( id );
-            if (player == null)
+            try
             {
-                return BadRequest( $"Player with id {id} doesn't exist" );
+                var player = _playersService.MovePlayer( id, coord );
+                return AcceptedAtRoute( "GetCompany", new { id = player.Id }, player );
             }
-            if(!player.CanMove(coord.PosX, coord.PosY ))
+            catch(DomainException e)
             {
-                return BadRequest($"Player with id {id} can't move to {coord.PosX}, {coord.PosY}");
+                return BadRequest( e.Message );
             }
 
-
-            player.move(coord.PosX, coord.PosY);
-            _context.SaveChanges();
-
-            return AcceptedAtRoute( "GetCompany", new { id = player.Id }, player );
         }
     }
 }
