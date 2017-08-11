@@ -42,7 +42,12 @@ HTTPS:
 Or SSH:
 ```git git clone git@github.com:Marsonge/HKR.git```
 
-Import the solution file ```HKR.sln```
+Import the solution file ```HKR.sln``` in Visual Studio 2017
+
+``` CTRL+F5``` to launch the application *without debug*.
+
+``` F5``` to launch the application in *debug mode*.
+
 
 ## Architecture ##
 
