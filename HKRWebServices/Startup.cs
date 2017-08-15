@@ -51,7 +51,7 @@ namespace HKRWebServices
             var mapper = config.CreateMapper();
             services.AddSingleton<IMapper>( mapper );*/
             //The database context
-            services.AddDbContext<HKRContext>( opt => opt.UseInMemoryDatabase() );
+            services.AddDbContext<HKRContext>( opt => opt.UseInMemoryDatabase("HKRMemDB") );
             return ConfigureIoC( services );
 
         }
