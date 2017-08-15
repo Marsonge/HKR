@@ -34,7 +34,11 @@ Front-end will send calls to the REST API via ajax to process the game informati
 - [BabylonJS](http://www.babylonjs.com/) for WebGL views of the game.
 
 ## Installation ##
-Clone the project in a folder with 
+
+- Install **AT LEAST** Visual Studio Community Edition **15.3**
+- [Download and install .NET Core 2.0 manually](https://www.microsoft.com/net/core)
+
+- Clone the project in a folder with 
 
 HTTPS:
 ```git git clone https://github.com/Marsonge/HKR.git```
@@ -42,7 +46,7 @@ HTTPS:
 Or SSH:
 ```git git clone git@github.com:Marsonge/HKR.git```
 
-Import the solution file ```HKR.sln``` in Visual Studio 2017
+- Import the solution file ```HKR.sln``` in Visual Studio 2017
 
 ``` CTRL+F5``` to launch the application *without debug*.
 
