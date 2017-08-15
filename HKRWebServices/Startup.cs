@@ -96,7 +96,7 @@ namespace HKRWebServices
             app.UseSwagger();
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS etc.), specifying the Swagger JSON endpoint.
-            app.UseHSwaggerUI( c =>
+            app.UseSwaggerUI( c =>
             {
                 c.SwaggerEndpoint( "/swagger/v1/swagger.json", "HKR API V1" );
             } );
