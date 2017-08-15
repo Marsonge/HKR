@@ -13,6 +13,7 @@ using StructureMap;
 using System.Diagnostics;
 using HKRCore.Model;
 using AutoMapper;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace HKRWebServices
 {
@@ -35,7 +36,13 @@ namespace HKRWebServices
         {
             // Add framework services.
             services.AddMvc().AddControllersAsServices();
+            // AutoMapper
             services.AddAutoMapper();
+            //Swagger generation
+            services.AddSwaggerGen( c =>
+            {
+                c.SwaggerDoc( "v1", new Info { Title = "HKR API", Version = "v1" } );
+            } );
             /*var config = new AutoMapper.MapperConfiguration( cfg =>
             {
                 cfg.AddProfile( new UserProfile() );
@@ -84,6 +91,15 @@ namespace HKRWebServices
             loggerFactory.AddDebug();
 
             app.UseMvc();
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS etc.), specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI( c =>
+            {
+                c.SwaggerEndpoint( "/swagger/v1/swagger.json", "HKR API V1" );
+            } );
         }
     }
 }
