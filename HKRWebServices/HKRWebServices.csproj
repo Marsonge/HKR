@@ -23,7 +23,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HKRCore\HKRCore.csproj" />
-    <ProjectReference Include="..\HKRInfrastructure\HKRInfrastructure.csproj" />
   </ItemGroup>
 
 </Project>
