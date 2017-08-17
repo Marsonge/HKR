@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using HKRCore.Model;
-using HKRInfrastructure.Context;
 using HKRCore.Interface;
 using HKRCore.DTO.PlayerDTO;
 using HKRCore.DTO;

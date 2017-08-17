@@ -3,25 +3,25 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using HKRCore.DTO.PlayerDTO;
-using AutoMapper;
-using HKRInfrastructure.Context;
 using System.Linq;
 using HKRCore.Model;
 using HKRCore.DTO;
 using HKRCore.Exception;
+using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using HKRCore.Context;
 
-namespace HKRInfrastructure.Service
+namespace HKRCore.Service
 {
     public class PlayersService : IPlayersService
     {
         private IMapper _mapper;
         private HKRContext _context;
 
-        public PlayersService( IMapper mapper, HKRContext context)
+        public PlayersService( IMapper mapper, HKRContext context )
         {
             _mapper = mapper;
             _context = context;
-
             if (_context.Players.Count() == 0)
             {
                 _context.Players.AddRange(

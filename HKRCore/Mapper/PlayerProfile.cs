@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using HKRCore.DTO.PlayerDTO;
+﻿using HKRCore.DTO.PlayerDTO;
 using HKRCore.Model;
+using AutoMapper;
 
-namespace HKRInfrastructure.Mapper
+namespace HKRCore.Mapper
 {
     public class PlayerProfile : Profile
     {

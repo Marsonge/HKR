@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HKRInfrastructure.Context
+namespace HKRCore.Context
 {
     public class HKRContext : DbContext
     {
