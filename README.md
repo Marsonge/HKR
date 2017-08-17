@@ -24,6 +24,8 @@ The back-end is a **REST API** developed with **ASP.NET Core 1.1** *(May be upda
 - C# as the language used.
 - Database access is done through [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/).
 - The back-end uses Dependency Injection with [StructureMap](http://structuremap.github.io/) coupled to the basic .NET Core one.
+- [Automapper](http://automapper.org/) for entity to dto conversion
+
 
 ## Web Front-End ##
 Front-end will send calls to the REST API via ajax to process the game informations.
@@ -60,26 +62,26 @@ The project is divided in multiple projects to keep it clean.
 [**A really cool PDF guide explaining the basic concepts that we will try to respect**](https://www.microsoft.com/net/download/thank-you/aspnet-ebook)
 ### HKRCore ###
 **The Domain/Core of the application.**
+- Model
+- Services interfaces and implementation
+- Domain Exceptions
+- DTOs and [Automapper](http://automapper.org/) configuration
+- Database context [EF Core](https://docs.microsoft.com/en-us/ef/#pivot=efcore)
 
-Basically the model classes and their business methods and the services interfaces.
-
-We don't want any database related core here. HKRCore isn't even aware that HKRInfrastructure exists so you can't call HKRContext directly in here (*And you shouldn't*). 
-
-Create interfaces here for services and implement them in HKRInfrastructure.
+Services call entities methods, call HKRContext and transform the result into DTOs
 
 We want to have as much business methods in the entities as possible, **we don't want an [anemic model](https://en.wikipedia.org/wiki/Anemic_domain_model)**.
-
-### HKRInfrastructure ###
-**Calls to other services (Repository, other APIs, ...) and implementations of the services.**
-
-HKRContext is the DBContext of the application, so the link to the database.
 
 ### HKRWebServices ###
 **The entry point of the back-end.**
 
-here we have Rest Controllers which will make calls to Services.
+Here we have Rest Controllers which will make calls to Services.
+
+This is also in this project that starts the application.
 
 We make use of the [Dependency Injection](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection) to inject services into the controllers.
+
+We use [StructureMap](http://structuremap.github.io/) to have a better IoC/DI container
 
 ### HKRWebProject ###
 **Doesn't exist at the moment.**

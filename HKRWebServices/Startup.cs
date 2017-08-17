@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using HKRInfrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using StructureMap;
-using System.Diagnostics;
-using HKRCore.Model;
 using AutoMapper;
 using Swashbuckle.AspNetCore.Swagger;
+using HKRCore.Context;
 
 namespace HKRWebServices
 {
@@ -51,7 +46,7 @@ namespace HKRWebServices
             var mapper = config.CreateMapper();
             services.AddSingleton<IMapper>( mapper );*/
             //The database context
-            services.AddDbContext<HKRContext>( opt => opt.UseInMemoryDatabase("HKRMemDB") );
+            services.AddDbContext<HKRContext>( opt => opt.UseInMemoryDatabase("HKRMemDB")  );
             return ConfigureIoC( services );
 
         }
