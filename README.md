@@ -17,7 +17,7 @@ So far, the team is composed of 4 developers working on their spare time.
  - ROS Quentin
 
 ## Back-End ##
-The back-end is a **REST API** developed with **ASP.NET Core 1.1** *(May be updated to use asp.net core 2.0 during development)*.
+The back-end is a **REST API** developed with **ASP.NET Core 2.0**.
 
 [Documentation on RESTful urls and verbs](http://restfulapi.net/http-methods/)
 #### Technologies used ####
@@ -37,8 +37,9 @@ Front-end will send calls to the REST API via ajax to process the game informati
 
 ## Installation ##
 
-- Install **AT LEAST** Visual Studio Community Edition **15.3**
-- [Download and install .NET Core 2.0 manually](https://www.microsoft.com/net/core)
+- Install the latest VS2017
+- You need the packages for Web Development and Development in .NET Core
+- Optional : Install Productivity Power Tools and Web Essentials 2017
 
 - Clone the project in a folder with 
 
